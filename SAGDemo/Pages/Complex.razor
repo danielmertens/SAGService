@@ -1,0 +1,63 @@
+﻿@page "/complex"
+@using SAGDemo.Models;
+@using SAGDemo.Services;
+@inject IOrderSagService sagService;
+
+<PageTitle>Complex example</PageTitle>
+
+<h1>Complex example: Ask about customer orders.</h1>
+
+<div>
+    <p>Example questions:</p>
+    <ul>
+        <li>What items did user JohnDoe order?</li>
+        <li>Which users ordered product Widget A?</li>
+    </ul>
+</div>
+
+<div>
+    <label for="inputText">Ask a question about customer order data:</label>
+    <input id="inputText" @bind="inputText" disabled="@loading"/>
+    <button id="AskQuestionBtn" @onclick="AskQuestion">Ask</button>
+</div>
+
+<hr />
+
+@if (loading)
+{
+    <div class="loader"></div>
+}
+
+@if (result is not null)
+{
+    if (result.Error is null)
+    {
+        <div>
+            <p><strong>Answer:</strong> @result.Answer</p>
+        </div>
+
+        <div>
+            <p><strong>Generated SQL:</strong> @result.GeneratedSQL</p>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p><strong>Error:</strong> @result.Error</p>
+        </div>
+    }
+}
+
+@code {
+    private bool loading = false;
+    private string inputText = "";
+
+    private SagResult? result = null;
+
+    private async Task AskQuestion()
+    {
+        loading = true;
+        result = await sagService.OrderQuestion(inputText);
+        loading = false;
+    }
+}

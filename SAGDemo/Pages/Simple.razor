@@ -1,0 +1,67 @@
+﻿@page "/"
+@using SAGDemo.Models;
+@using SAGDemo.Services;
+@inject IAlbumSagService sagService;
+
+<PageTitle>Simple example</PageTitle>
+
+<h1>Simple example: Ask about music albums.</h1>
+
+<div>
+    <p>Example questions:</p>
+    <ul>
+        <li>How many songs are there in total?</li>
+        <li>What was the last album released by The Beatles?</li>
+        <li>Give me all albums released in the 70's.</li>
+    </ul>
+</div>
+
+<div>
+    <label for="inputText">Ask a question about the album data:</label>
+</div>
+
+<div>
+    <input id="inputText" @bind="inputText" disabled="@loading" style="width: 500px"/>
+    <button id="AskQuestionBtn" @onclick="AskQuestion">Ask</button>
+</div>
+
+<hr/>
+
+@if (loading)
+{
+    <div class="loader"></div>
+}
+
+@if (result is not null)
+{
+    if (result.Error is null)
+    {
+        <div>
+            <p><strong>Answer:</strong> @result.Answer</p>
+        </div>
+
+        <div>
+            <p><strong>Generated SQL:</strong> @result.GeneratedSQL</p>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p><strong>Error:</strong> @result.Error</p>
+        </div>
+    }
+}
+
+@code {
+    private bool loading = false;
+    private string inputText = "";
+
+    private SagResult? result = null;
+
+    private async Task AskQuestion()
+    {
+        loading = true;
+        result = await sagService.AlbumQuestion(inputText);
+        loading = false;
+    }
+}
