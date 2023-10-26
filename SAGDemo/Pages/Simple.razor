@@ -37,17 +37,19 @@
     if (result.Error is null)
     {
         <div>
-            <p><strong>Answer:</strong> @result.Answer</p>
+            <p><strong>Answer:</strong></p>
+            <pre>@result.Answer</pre>
         </div>
 
         <div>
-            <p><strong>Generated SQL:</strong> @result.GeneratedSQL</p>
+            <p><strong>Generated SQL:</strong></p>
+            <pre>@result.GeneratedSQL</pre>
         </div>
     }
     else
     {
         <div>
-            <p><strong>Error:</strong> @result.Error</p>
+            <pre><strong>Error:</strong> @result.Error</pre>
         </div>
     }
 }

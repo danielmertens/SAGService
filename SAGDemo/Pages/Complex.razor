@@ -17,7 +17,10 @@
 
 <div>
     <label for="inputText">Ask a question about customer order data:</label>
-    <input id="inputText" @bind="inputText" disabled="@loading"/>
+</div>
+
+<div>
+    <input id="inputText" @bind="inputText" disabled="@loading" style="width: 500px" />
     <button id="AskQuestionBtn" @onclick="AskQuestion">Ask</button>
 </div>
 
@@ -33,11 +36,13 @@
     if (result.Error is null)
     {
         <div>
-            <p><strong>Answer:</strong> @result.Answer</p>
+            <p><strong>Answer:</strong></p>
+            <pre>@result.Answer</pre>
         </div>
 
         <div>
-            <p><strong>Generated SQL:</strong> @result.GeneratedSQL</p>
+            <p><strong>Generated SQL:</strong></p>
+            <pre>@result.GeneratedSQL</pre>
         </div>
     }
     else

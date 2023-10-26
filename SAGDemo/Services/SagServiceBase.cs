@@ -46,18 +46,19 @@ public abstract class SagServiceBase
 
     private async Task<string> GenerateSQL(string question, string tables)
     {
-        var system = @"You are an expert SQL engineer. The user will ask you a question about a table in your database and will provide the schema.
+        var system = @"You are an expert SQL server engineer. The user will ask you a question about a table in your database and will provide the schema.
 
 The output must only contain the SQL query that will retrieve the requested information from the database.
 If you are unable to generate the query with the provided information, respond with ""I'm unable to answer this question"".
 
-The database is SQL Server, so always use T-SQL.
+The database is an SQL Server, so always use T-SQL.
 
-Only create SELECT queries. Never update or delete any data or drop any tables.
+Only create SELECT queries. Never update or delete any data or drop any tables.";
 
-The output could contain a big number of rows, so made sure you limit your queries to a max of 10 rows.";
+// Refine this. ChatGPT tends to use "Limit 10" for this, which is mySQL.
+// The output could contain a big number of rows, so made sure you only retrieve the first 10 rows.
 
-        var prompt = @$"Assume the database has a table that is defined as follows:
+                var prompt = @$"Assume the database has a table that is defined as follows:
 {tables}
 
 Generate a well-formed SQL query from the following prompt:
